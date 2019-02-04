@@ -105,8 +105,5 @@ toCashAddress('1B9UNtBfkkpgt8kVbwLN9ktE62QKnMbDzR') // bitcoincash:qph5kuz78czq0
 
 ## Documentation and Help
 
-rafaelosiris@gmail.com
-
-
-### Generate and Browse Locally
+rafaelosiris@gmail.com 
 
