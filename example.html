@@ -1,7 +1,6 @@
 <html>
 	<head>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script src="https://app.bitmineria.com/assets/js/bchabc/cashaddrjs-0.3.2.min.js"></script>		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
 		<script src="https://cdn.jsdelivr.net/gh/rafaelosiris/bchjs/library/bchaddrjs-0.3.0.min.js"></script>
 		<script src="https://cdn.jsdelivr.net/gh/rafaelosiris/bchjs/library/bitcoincashjs.0.1.7.min.js"></script>
 	
@@ -48,11 +47,13 @@
 				  
 				  <button id="bWallet" class="button">verify Balance</button>
 				  <br />
+				  GET FREE BCH FAUCET TO TEST <a href="https://developer.bitcoin.com/faucets/bch/" target=_blank>HERE</a>
+				  <br /><br />
 				  </div>
 		  </div>
 		  <div id="bmsg"></div>			  
 		  
-		  <hr>					
+		  <hr>					 
 		  <div class="row-fluid">
 				  <div class="span12">
 				  Transfer BCH: <br />
@@ -132,7 +133,7 @@
 						{ 
 						 console.log("Data2 Length: "+data2.length);
 
-							var msg = 'BALANCE: '+data2.balance+'<br /> BALANCE SATOSHI: '+data2.balanceSat;
+							var msg = 'BALANCE: '+data2.balance+'<br /> BALANCE SATOSHI: '+data2.balanceSat+'<br /> <b>UNCONFIRMED TXS</b> </br> Transactions: '+data2.unconfirmedTxApperances+' <br /> Unconfirmed Balance: '+data2.unconfirmedBalance;
 							$('#bmsg').html( '' );
 							$('#bmsg').html( msg );							
 						});				

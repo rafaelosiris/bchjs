@@ -32,76 +32,175 @@ var Network = bchaddr.Network; // Mainnet or Testnet.
 var Type = bchaddr.Type; // P2PKH or P2SH.
 ```
 
-### Test for address format.
-```javascript
-var isLegacyAddress = bchaddr.isLegacyAddress;
-var isBitpayAddress = bchaddr.isBitpayAddress;
-var isCashAddress = bchaddr.isCashAddress;
 
-isLegacyAddress('1B9UNtBfkkpgt8kVbwLN9ktE62QKnMbDzR') // true
-isLegacyAddress('qph5kuz78czq00e3t85ugpgd7xmer5kr7c5f6jdpwk') // false
-isBitpayAddress('CScMwvXjdooDnGevHgfHjGWFi9cjk75Aaj') // true
-isBitpayAddress('1B9UNtBfkkpgt8kVbwLN9ktE62QKnMbDzR') // false
-isCashAddress('qph5kuz78czq00e3t85ugpgd7xmer5kr7c5f6jdpwk') // true
-isCashAddress('CScMwvXjdooDnGevHgfHjGWFi9cjk75Aaj') // false
+```HTML
+<html>
+	<head>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
+		<script src="https://cdn.jsdelivr.net/gh/rafaelosiris/bchjs/library/bchaddrjs-0.3.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/rafaelosiris/bchjs/library/bitcoincashjs.0.1.7.min.js"></script>
+	
+	</head>
+	
+	<body>
+	
+	
+
+
+<!-- BEGIN PAGE CONTAINER-->
+<div class="page-content"> 
+  <div class="clearfix"></div>
+	  <div class="content">    
+		  <div class="page-title" style="display:"> <a href="#" id="btn-back"><i class="icon-custom-left"></i></a>
+			  <h3>BCHJS LIBRARY - <span class="semi-bold"> VIEW ON  <a href="https://github.com/rafaelosiris/bchjs">GITHUB</a> </span></h3>
+		   </div>	
+		  <hr>
+		  <h3>BCHJS BLOCKCHAIN FUNCTIONS</h3>
+		  <hr>					
+		  <div class="row-fluid">
+				  <div class="span12">
+				  Create Wallet: <button id="cWallet" class="button">create wallet</button>
+				  <br />
+				  </div>
+		  </div>
+		  <div id="msg"></div>
+		  
+		  <hr>					
+		  <div class="row-fluid">
+				  <div class="span12">
+				  Verify Wallet: <input type="text" id="vText" /> <button id="vWallet" class="button">verify wallet</button>
+				  <br />
+				  </div>
+		  </div>
+		  <div id="vmsg"></div>	
+		  
+		  
+		  <hr>					
+		  <div class="row-fluid">
+				  <div class="span12">
+				  Balance of Account: <br />
+				  <input type="text" id="bText" placeholder="PUT THE PUBLIC KEY HERE" size="50" /> <br />
+				  
+				  <button id="bWallet" class="button">verify Balance</button>
+				  <br />
+				  GET FREE BCH FAUCET TO TEST <a href="https://developer.bitcoin.com/faucets/bch/" target=_blank>HERE</a>
+				  <br /><br />
+				  </div>
+		  </div>
+		  <div id="bmsg"></div>			  
+		  
+		  <hr>					
+		  <div class="row-fluid">
+				  <div class="span12">
+				  Transfer BCH: <br />
+				  <input type="text" id="pfTx" placeholder="PUT THE SENDER PRIVATE KEY HERE" size="50" /><br />
+				  <input type="text" id="ptTx" placeholder="PUT THE RECEIVER PUBLIC KEY HERE" size="50" /> <br />
+				  <input type="number" id="aTx" placeholder="AMOUNT TO TRANSFER" /> <br />
+				  
+				  <button id="tWallet" class="button">Transfer</button>
+				  <br />
+				  </div>
+		  </div>
+		  <div id="tmsg"></div>			  
+
+
+   </div>
+</div>  
+	
+	
+	
+	</body>
+	
+	  <script>
+		  $(document).ready(function()
+		  {	
+		  /* JAVASCRIPT CREATE WALLET BITCOIN CASH FUNCTIONS */
+			var Format = bchaddr.Format; // Legacy, Bitpay or Cashaddr.
+			var Network = bchaddr.Network; // Mainnet or Testnet.
+			var Type = bchaddr.Type; // P2PKH or P2SH.
+
+			var isLegacyAddress = bchaddr.isLegacyAddress;
+			var isBitpayAddress = bchaddr.isBitpayAddress;
+			var isCashAddress = bchaddr.isCashAddress;	
+			var toCashAddress = bchaddr.toCashAddress;
+			
+			
+			//create wallet
+			 $('#cWallet').click(function() {
+				const privateKey = bch.PrivateKey('testnet'); 
+				
+				//const address = privateKey.toAddress();  //livenet
+				const address = privateKey.toAddress('testnet');  //testnet
+
+				var exported = privateKey.toWIF();
+				var pkey = exported.toString();
+				var legacyaddress = address.toString();
+				var cashaddress = toCashAddress(address.toString());
+				var msg = 'Private Key: *'+pkey+'* <br /> Public CASH Key: *'+cashaddress+'* <br /> Public Legacy Key: *'+legacyaddress+'*';
+				$('#msg').html( msg );
+			});
+			
+			//verify wallet
+			 $('#vWallet').click(function() {
+			 
+				var vInput = $('#vText').val();				
+				const wif2 = vInput;
+				//const wif2 = 'L16d3gWfjTndJEfMcd8hSWwkFcUcZt5r1HhLhrLUtbDQC6hzQYQv';
+				var imported2 = bch.PrivateKey.fromWIF(wif2);
+				const address2 = imported2.toAddress(); 				
+				var detectAddressNetwork = bchaddr.detectAddressNetwork;				
+				var msg = 'Legacy Address: '+address2.toString()+ '<br /> Network: '+detectAddressNetwork(address2.toString());
+				$('#vmsg').html( '' );
+				$('#vmsg').html( msg );
+			});	
+			
+			//balance amount
+			 $('#bWallet').click(function() {
+			 
+				var vInput = $('#bText').val();				
+			
+
+				
+				
+				//Get the balance by restfull bitcoin.com --- this rest is in the test net, for mainnet just change trest for rest.
+					 $.ajax({
+						 url: "https://trest.bitcoin.com/v1/address/details/"+vInput+""
+						}).then(function(data2)
+						{ 
+						 console.log("Data2 Length: "+data2.length);
+
+							var msg = 'BALANCE: '+data2.balance+'<br /> BALANCE SATOSHI: '+data2.balanceSat+'<br /> <b>UNCONFIRMED TXS</b> </br> Transactions: '+data2.unconfirmedTxApperances+' <br /> Unconfirmed Balance: '+data2.unconfirmedBalance;
+							$('#bmsg').html( '' );
+							$('#bmsg').html( msg );							
+						});				
+				
+				
+
+			});				
+			
+			
+			//transfer amount
+			 $('#tWallet').click(function() {
+			 
+				var vInput = $('#vText').val();				
+				const wif2 = vInput;
+				//const wif2 = 'L16d3gWfjTndJEfMcd8hSWwkFcUcZt5r1HhLhrLUtbDQC6hzQYQv';
+				var imported2 = bch.PrivateKey.fromWIF(wif2);
+				const address2 = imported2.toAddress(); 				
+				var detectAddressNetwork = bchaddr.detectAddressNetwork;				
+				var msg = 'Legacy Address: '+address2.toString()+ '<br /> Network: '+detectAddressNetwork(address2.toString());
+				$('#vmsg').html( '' );
+				$('#vmsg').html( msg );
+			});				
+			
+			
+		  });	
+		 /* END */
+		 </script> 	
+
+</html>
 ```
-
-### Test for address network.
-```javascript
-var isMainnetAddress = bchaddr.isMainnetAddress;
-var isTestnetAddress = bchaddr.isTestnetAddress;
-
-isMainnetAddress('1P238gziZdeS5Wj9nqLhQHSBK2Lz6zPSke') // true
-isMainnetAddress('mnbGP2FeRsbgdQCzDT35zPWDcYSKm4wrcg') // false
-isTestnetAddress('qqdcsl6c879esyxyacmz7g6vtzwjjwtznsggspc457') // true
-isTestnetAddress('CeUvhjLnSgcxyedaUafcyo4Cw9ZPwGq9JJ') // false
-```
-
-### Test for address type.
-```javascript
-var isP2PKHAddress = bchaddr.isP2PKHAddress;
-var isP2SHAddress = bchaddr.isP2SHAddress;
-
-isP2PKHAddress('1Mdob5JY1yuwoj6y76Vf3AQpoqUH5Aft8z') // true
-isP2PKHAddress('2NFGG7yRBizUANU48b4dASrnNftqsNwzSM1') // false
-isP2SHAddress('H92i9XpREZiBscxGu6Vx3M8jNGBKqscBBB') // true
-isP2SHAddress('CeUvhjLnSgcxyedaUafcyo4Cw9ZPwGq9JJ') // false
-```
-
-### Detect address format.
-```javascript
-var detectAddressFormat = bchaddr.detectAddressFormat;
-
-detectAddressFormat('qqdcsl6c879esyxyacmz7g6vtzwjjwtznsggspc457') // Format.Cashaddr
-detectAddressFormat('CScMwvXjdooDnGevHgfHjGWFi9cjk75Aaj') // Format.Bitpay
-```
-
-### Detect address network.
-```javascript
-var detectAddressNetwork = bchaddr.detectAddressNetwork;
-
-detectAddressNetwork('1P238gziZdeS5Wj9nqLhQHSBK2Lz6zPSke') // Network.Mainnet
-detectAddressNetwork('qqdcsl6c879esyxyacmz7g6vtzwjjwtznsggspc457') // Network.Testnet
-```
-
-### Detect address type.
-```javascript
-var detectAddressType = bchaddr.detectAddressType;
-
-detectAddressType('1P238gziZdeS5Wj9nqLhQHSBK2Lz6zPSke') // Type.P2PKH
-detectAddressType('3NKpWcnyZtEKttoQECAFTnmkxMkzgbT4WX') // Type.P2SH
-```
-
-### Translate address from any address format into a specific format.
-```javascript
-var toLegacyAddress = bchaddr.toLegacyAddress;
-var toBitpayAddress = bchaddr.toBitpayAddress;
-var toCashAddress = bchaddr.toCashAddress;
-
-toLegacyAddress('qph5kuz78czq00e3t85ugpgd7xmer5kr7c5f6jdpwk') // 1B9UNtBfkkpgt8kVbwLN9ktE62QKnMbDzR
-toBitpayAddress('1B9UNtBfkkpgt8kVbwLN9ktE62QKnMbDzR') // CScMwvXjdooDnGevHgfHjGWFi9cjk75Aaj
-toCashAddress('1B9UNtBfkkpgt8kVbwLN9ktE62QKnMbDzR') // bitcoincash:qph5kuz78czq00e3t85ugpgd7xmer5kr7c5f6jdpwk
-```
+ 
 
 ## Documentation and Help
 
